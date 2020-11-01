@@ -1,0 +1,3 @@
+rootProject.name = 'gradle-multi-java-modules-sample'
+
+include 'example-api', 'example-core', 'example-in-memory-data'

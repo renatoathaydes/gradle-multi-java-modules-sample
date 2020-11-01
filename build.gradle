@@ -1,0 +1,29 @@
+subprojects {
+    apply plugin: 'java-library'
+    java {
+        modularity.inferModulePath = true
+    }
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
+task createModulePath(type: Copy) {
+    def runtimeModules = [
+            project(':example-api'),
+            project(':example-in-memory-data'),
+            project(':example-core'),
+    ]
+    runtimeModules.each { module ->
+        dependsOn module.jar
+        from module.jar
+        from module.configurations.runtimeClasspath
+    }
+    into file("$buildDir/mods")
+}
+
+task clean(type: Delete) {
+    delete buildDir
+}
+
+task build {
+    dependsOn createModulePath
+}
